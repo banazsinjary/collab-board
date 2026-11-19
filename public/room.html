@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Room · Collab Board</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="room offline" id="room">
+    <header>
+      <a href="/">←</a>
+      <h1 id="roomName">Loading…</h1>
+      <span class="code" id="roomCode"></span>
+      <button id="copyLink">Copy link</button>
+      <span class="spacer"></span>
+      <button id="addNote" class="primary" disabled>+ Add note</button>
+      <span class="status offline" id="status">Connecting…</span>
+    </header>
+    <div id="viewport"><div id="board"></div></div>
+    <aside>
+      <h2>In this room (<span id="count">0</span>)</h2>
+      <ul id="users"></ul>
+      <p class="hint">Double-click the board to add a note. Drag a note by its top bar. Edits save automatically.</p>
+    </aside>
+  </div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/room.js"></script>
+</body>
+</html>

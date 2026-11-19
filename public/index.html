@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Collab Board</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <main class="landing">
+    <h1>Collab Board</h1>
+    <p>A shared sticky-note board. Create a room and send the link, or join with a code.</p>
+
+    <label for="name">Your name</label>
+    <input id="name" maxlength="30" placeholder="e.g. Banaz" />
+
+    <label for="roomName">New room name</label>
+    <div class="row">
+      <input id="roomName" maxlength="80" placeholder="Sprint planning" />
+      <button id="create" class="primary">Create room</button>
+    </div>
+
+    <hr />
+
+    <label for="code">Join with a room code</label>
+    <div class="row">
+      <input id="code" maxlength="6" placeholder="ABC123" style="text-transform:uppercase" />
+      <button id="join">Join</button>
+    </div>
+    <p class="error" id="error"></p>
+  </main>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    $('name').value = localStorage.getItem('collab:name') || '';
+
+    function requireName() {
+      const name = $('name').value.trim();
+      if (!name) { $('error').textContent = 'Please enter your name first.'; $('name').focus(); return null; }
+      localStorage.setItem('collab:name', name);
+      return name;
+    }
+
+    $('create').onclick = async () => {
+      if (!requireName()) return;
+      const res = await fetch('/api/rooms', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: $('roomName').value }),
+      });
+      if (!res.ok) { $('error').textContent = 'Could not create room.'; return; }
+      const room = await res.json();
+      location.href = '/room/' + room.id;
+    };
+
+    $('join').onclick = async () => {
+      if (!requireName()) return;
+      const code = $('code').value.trim().toUpperCase();
+      if (!code) { $('error').textContent = 'Enter a room code.'; return; }
+      const res = await fetch('/api/rooms/' + encodeURIComponent(code));
+      if (!res.ok) { $('error').textContent = 'No room with that code.'; return; }
+      location.href = '/room/' + code;
+    };
+    $('code').addEventListener('keydown', (e) => { if (e.key === 'Enter') $('join').click(); });
+  </script>
+</body>
+</html>
