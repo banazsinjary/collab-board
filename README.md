@@ -2,8 +2,8 @@
 
 A real-time, multi-user sticky-note board. Create a room, share the link or 6-character code, and everyone in the room sees each other's presence and cursors and can add, move, edit, and delete notes live. Everything is saved to a database, so the board is still there after everyone leaves or the server restarts.
 
-**Live app:** _add your deployed URL here_
-**Demo video:** _add link here_
+**Live app:** collab-board-production-7111efd8.up.railway.app
+**Demo video:** link here
 
 ## Run locally
 
